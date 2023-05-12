@@ -21,10 +21,15 @@ namespace Buttler.Test.Infrastructure.Persistance
         public DbSet<Customer> Customers { get; set; }
         public DbSet<OrderItems> OrderItems { get; set; }
         public DbSet<OrderMaster> OrderMasters { get; set; }
+        public DbSet<UserDetails> UserDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.Entity<ApplicationUser>().HasOne(id => id.UserDetails)
+                .WithOne(uid => uid.ApplicationUser)
+                .HasForeignKey<UserDetails>(fk => fk.UId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

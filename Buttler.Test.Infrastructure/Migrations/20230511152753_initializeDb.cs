@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Buttler.Test.Infrastructure.Migrations
 {
-    public partial class changesintables : Migration
+    public partial class initializeDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -186,6 +186,27 @@ namespace Buttler.Test.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserDetails",
+                columns: table => new
+                {
+                    UId = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
+                    Age = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserDetails", x => x.UId);
+                    table.ForeignKey(
+                        name: "FK_UserDetails_AspNetUsers_UId",
+                        column: x => x.UId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tables",
                 columns: table => new
                 {
@@ -343,16 +364,19 @@ namespace Buttler.Test.Infrastructure.Migrations
                 name: "OrderItems");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "UserDetails");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Foods");
 
             migrationBuilder.DropTable(
                 name: "OrderMasters");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Tables");

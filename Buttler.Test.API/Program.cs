@@ -14,6 +14,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var jwtSettings = builder.Configuration.GetSection("JWT");
+var callbackURL = builder.Configuration.GetSection("callbackURL");
+builder.Services.Configure<CallbackURLModel>(callbackURL);
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.Configure<TokenModel>(jwtSettings);
 builder.Services.AddMediatR(conf => conf.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.Load("Buttler.Test.Application")));
 builder.Services.AddScoped<ApplicationDbContext>();
@@ -26,8 +29,25 @@ builder.Services
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.Configure<IdentityOptions>(opt =>
+{
+    opt.Password.RequiredUniqueChars = 1;
+    opt.Password.RequireNonAlphanumeric = true;
+    opt.Password.RequireDigit = true;
+    opt.Password.RequiredLength = 8;
+    opt.Password.RequireLowercase = true;
+    opt.Password.RequireUppercase = true;
+    opt.User.RequireUniqueEmail = true;
+    opt.User.AllowedUserNameCharacters = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM.-_@+";
+    opt.Tokens.AuthenticatorTokenProvider = "EmailProvider";
+});
+
 builder.Services.AddScoped<ITokenGenerateService, TokenGenerateService>();
 builder.Services.AddScoped<IFoodRepo, FoodRepo>();
+builder.Services.AddScoped<ITablesRepo, TablesRepo>();
+builder.Services.AddScoped<IPlaceOrderRepo, PlaceOrderRepo>();
+builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
+builder.Services.AddSingleton<EmailService>();
 
 builder.Services.AddAuthentication(option =>
 {

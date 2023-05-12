@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Buttler.Test.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230505181223_changes in tables")]
-    partial class changesintables
+    [Migration("20230511152753_initializeDb")]
+    partial class initializeDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -239,6 +239,30 @@ namespace Buttler.Test.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Buttler.Test.Infrastructure.Identity.UserDetails", b =>
+                {
+                    b.Property<string>("UId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UId");
+
+                    b.ToTable("UserDetails");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -415,6 +439,17 @@ namespace Buttler.Test.Infrastructure.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("Buttler.Test.Infrastructure.Identity.UserDetails", b =>
+                {
+                    b.HasOne("Buttler.Test.Infrastructure.Identity.ApplicationUser", "ApplicationUser")
+                        .WithOne("UserDetails")
+                        .HasForeignKey("Buttler.Test.Infrastructure.Identity.UserDetails", "UId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -463,6 +498,12 @@ namespace Buttler.Test.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Buttler.Test.Infrastructure.Identity.ApplicationUser", b =>
+                {
+                    b.Navigation("UserDetails")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

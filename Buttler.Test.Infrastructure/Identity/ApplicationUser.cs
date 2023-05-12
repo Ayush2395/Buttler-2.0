@@ -5,5 +5,6 @@ namespace Buttler.Test.Infrastructure.Identity
 {
     public class ApplicationUser : IdentityUser
     {
+        public UserDetails UserDetails { get; set; }
     }
 }

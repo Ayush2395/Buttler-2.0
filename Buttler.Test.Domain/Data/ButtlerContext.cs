@@ -30,6 +30,7 @@ namespace Buttler.Test.Domain.Data
         public virtual DbSet<OrderItems> OrderItems { get; set; }
         public virtual DbSet<OrderMasters> OrderMasters { get; set; }
         public virtual DbSet<Tables> Tables { get; set; }
+        public virtual DbSet<UserDetails> UserDetails { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -234,6 +235,21 @@ namespace Buttler.Test.Domain.Data
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Tables)
                     .HasForeignKey(d => d.CustomerId);
+            });
+
+            modelBuilder.Entity<UserDetails>(entity =>
+            {
+                entity.HasKey(e => e.Uid);
+
+                entity.Property(e => e.Uid).HasColumnName("UId");
+
+                entity.Property(e => e.Gender)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.UidNavigation)
+                    .WithOne(p => p.UserDetails)
+                    .HasForeignKey<UserDetails>(d => d.Uid);
             });
 
             OnModelCreatingPartial(modelBuilder);

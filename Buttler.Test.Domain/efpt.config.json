@@ -61,6 +61,10 @@
       {
          "Name": "[dbo].[Tables]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UserDetails]",
+         "ObjectType": 0
       }
    ],
    "UiHint": "desktop-mukilso\\ayush.Buttler.dbo",

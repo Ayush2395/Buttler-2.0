@@ -80,6 +80,19 @@ namespace Buttler.Test.Infrastructure.Persistance
                     }
                 }
 
+                //if (_context.UserDetails.Any(r => r.FirstName != adminUser.UserName))
+                //{
+                //    _context.UserDetails.Add(new()
+                //    {
+                //        UId = adminUser.Id,
+                //        FirstName = adminUser.UserName,
+                //        LastName = "Kumar",
+                //        Age = 23,
+                //        Gender = "Male"
+                //    });
+                //    await _context.SaveChangesAsync();
+                //}
+
             }
             catch (Exception ex)
             {

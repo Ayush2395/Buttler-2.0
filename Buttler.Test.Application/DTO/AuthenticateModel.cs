@@ -12,6 +12,8 @@ namespace Buttler.Test.Application.DTO
         public IList<string> Roles { get; set; }
         public string Email { get; set; }
         public string UserName { get; set; }
+        public bool IsEmailVerified { get; set; }
+        public bool IsTwoFactorAuthentication { get; set; }
         public DateTime ExpiresIn { get; set; }
     }
 }

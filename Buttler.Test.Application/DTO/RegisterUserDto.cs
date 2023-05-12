@@ -11,7 +11,11 @@ namespace Buttler.Test.Application.DTO
     public class RegisterUserDto
     {
         [Required(ErrorMessage = "Username reuired")]
-        public string UserName { get; set; }
+        public string FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? Gender { get; set; }
+        public int? Age { get; set; }
+
         [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Password is required")]
@@ -19,5 +23,6 @@ namespace Buttler.Test.Application.DTO
         [Required(ErrorMessage = "Phone number required")]
         public string PhoneNumber { get; set; }
         public Enums.UserRole Roles = Enums.UserRole.staff;
+
     }
 }
